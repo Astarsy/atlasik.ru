@@ -13,7 +13,6 @@ class FormFactory{
         foreach($field_templates as $t){
             $form->addField($this->createField($t));
         }
-        //header('content-type:text/plain');echo var_dump($form);exit;
         return $form;
     }
     protected function createField($t){
