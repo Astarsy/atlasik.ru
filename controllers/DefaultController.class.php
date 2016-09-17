@@ -5,7 +5,7 @@ class DefaultController extends AbstractController{
     // Использует собственный провайдер БД- ShopDB
     public function __construct(){
         $this->_host=$_SERVER['SERVER_NAME'];
-        $this->_db=new ShopDB();
+        $this->_db=ShopDB::getInstance();
         $this->_logger=new Logger();
     }
     public function Method(){

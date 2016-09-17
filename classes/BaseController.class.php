@@ -10,6 +10,7 @@ abstract class BaseController extends AbstractController{
     // Т.е. 'SomeController'=>0 - доступ для зарег. п-лей
     protected $_perms=array(
             'CabinetController'=>0,
+            'AdminController'=>1,
         );
 
     public function __construct(){
@@ -23,7 +24,7 @@ abstract class BaseController extends AbstractController{
     protected function getPermitions($uid,$cn){
         // Проверяет наличие прав, возвращяет true/false
         if(!isset($this->_perms[$cn]))return true;
-        if(NULL===$this->_user->id)return false;
+        if(NULL===$this->_user->id||NULL===$this->_user->activated_date)return false;
         if($this->_perms[$cn]===0)return true;
         if(NULL===$this->_user->admin)return false;
         if($this->_perms[$cn]===1)return true;

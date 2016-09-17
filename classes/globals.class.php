@@ -5,6 +5,7 @@ namespace Globals{
     define('GOOD_FOTO_MINI_PATH',$_SERVER['DOCUMENT_ROOT'].'/'.'fotos/mini/');
     define('GOOD_FOTO_BIG_PATH',$_SERVER['DOCUMENT_ROOT'].'/'.'fotos/big/');
     const FILE_FIELD_NAME='user_file';
+    const FORMS_INI_FILE='forms.ini';
     const MINI_WIDTH=400; const MINI_HEIGHT=115;
     const MAXI_WIDTH=728; const MAXI_HEIGHT=210;
     const MAX_IMAGEFILE_SIZE=30000000;

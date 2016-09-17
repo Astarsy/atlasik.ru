@@ -1,6 +1,6 @@
 <?php
-class CabinetController extends BaseController{
-    //Контроллер Кабинета Пользоваталя- только для зарег. п-лей
+class RegisterController extends AbstractController{
+    // Регистрация п-лей
     public function Method(){
         // Главная Кабинета
         $fc=AppController::getInstance();
@@ -9,35 +9,6 @@ class CabinetController extends BaseController{
     }
     public function registerMethod(){
         // Регистрировать незалогиненного п-ля
-        $fc=AppController::getInstance();
-
-        if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
-        else $title='Сообщение';
-        if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
-        else $msg='Отсутствует текст сообщения...';
-        $title=Msg::decode($title);
-        if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
-        else $title='Сообщение';
-        if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
-        else $msg='';
-        $title=Msg::decode($title);
-        $user=$this->_logger->getUser();
-        $user->add_reg_form_time=$this->_db->getUserSalerRequestTime($user);
-        $cabinet=new Cabinet($user);
-        $countries=$this->_db->getCountries();
-        $template_name='cabinet/'.get_class($cabinet->getForm()).'.html';
-        $fc->setContent($fc->render('cabinet/profile.twig.html',array(
-            'msg'=>$msg,
-            'template_name'=>$template_name,
-            'user'=>$user,
-            'classes'=>$cabinet->getForm()->getClasses(),
-            'fields'=>$cabinet->getForm()->getFields(),
-            'msgs'=>$cabinet->getForm()->getMsgs(),
-            'countries'=>$countries,
-            )));
-    }
-    public function profileMethod(){
-        // gladkov.loc/cabinet/profile
         $fc=AppController::getInstance();
 
         if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];

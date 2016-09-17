@@ -2,6 +2,10 @@
 class CabinetController extends BaseController{
     // Контроллер Кабинета Пользоваталя
     // Права для зарег. п-лей
+    public function __construct(){
+    	parent::__construct();
+    	$this->cabinet=new Cabinet();
+    }
     public function Method(){
         $fc=AppController::getInstance();
         $this->title='Личный кабинет';

@@ -11,7 +11,7 @@ class Logger{
     //в виде строке json
     protected $_user;
     public function __construct(){
-        $this->_db=new UserDB();
+        $this->_db=UserDB::getInstance();
         if(isset($_SESSION[Globals\USER_SESNAME])){
             $mail=$_SESSION[Globals\USER_SESNAME];
             $this->_user=$this->_db->getUserByEmail($mail);

@@ -13,8 +13,10 @@ CREATE TABLE users(
 			slug VARCHAR(20) NOT NULL UNIQUE,
 			email VARCHAR(80) NOT NULL UNIQUE,
 			name VARCHAR(80) NOT NULL UNIQUE,
-			phone VARCHAR(80) NULL,			
-			activated_date INT NULL
+			phone VARCHAR(80) NULL,
+			address VARCHAR(400) NULL,
+			activated_date INT NULL,
+			admin INT NULL
 			);
 CREATE TABLE user_reg_data(
 			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -22,11 +24,6 @@ CREATE TABLE user_reg_data(
 			pass_hash VARCHAR(40) NOT NULL,
 			solt INT NOT NULL,
 			iters INT NOT NULL,
-			FOREIGN KEY(uid) REFERENCES users(id)
-			);
-CREATE TABLE admins(
-			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			uid INT NOT NULL UNIQUE,
 			FOREIGN KEY(uid) REFERENCES users(id)
 			);
 CREATE TABLE manufs(
@@ -71,11 +68,11 @@ CREATE TABLE goods(
 INSERT INTO errors(id,title,text)
 	VALUES	(1,'Ваша учетная запись не активна','Для активации учетной записи требуется подтверждение электронного адреса. Для этого пожалуйста, следуйте инструкциям в письме, отправленном по данному электронному адресу, либо воспользуйтесь ссылкой для восстановления пароля. Спасибо!'),
 			(2,'Что-то не так','Произошла какая-то непонятность... Если это повторяется, пожалуйста, напишите мне! Спасибо!');
-INSERT INTO users(id,slug,name,phone,email,activated_date)
-	VALUES	(1,'u_001','John Smith','+7(917)117-17-17','john@smith.loc',1468499077),
-			(2,'u_002','Mike White','+7(902)111-11-11','mike@white.loc',1468499277),
-			(3,'u_003','Not Active User',NULL,'not@active.user',NULL),
-			(4,'u_004','Anonim User',NULL,'anonim@user.loc',1468500090);
+INSERT INTO users(id,slug,name,phone,email,activated_date,admin)
+	VALUES	(1,'u_001','John Smith','+7(917)117-17-17','john@smith.loc',1468499077,1),
+			(2,'u_002','Mike White','+7(902)111-11-11','mike@white.loc',1468499277,NULL),
+			(3,'u_003','Not Active User',NULL,'not@active.user',NULL,NULL),
+			(4,'u_004','Anonim User',NULL,'anonim@user.loc',1468500090,NULL);
 INSERT INTO user_reg_data(uid,pass_hash,solt,iters)
 	VALUES	(1,'51684c5c468cf340fff1ea640fe7c2d68ecfd1ca',1784945005,19),
 			(2,'8b6c20edaa42700a450590f58286308d9cb3a8a7',1045074831,6),
