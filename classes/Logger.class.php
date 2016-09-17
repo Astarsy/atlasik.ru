@@ -33,9 +33,9 @@ class Logger{
     }
     protected function setGuest(){
         $this->_user=new stdClass();
-        $this->_user->slug=NULL;
+        $this->_user->id=NULL;
+        $this->_user->admin=NULL;
         $this->_user->name='гость';
-
     }
     public function logout(){
         session_destroy();
@@ -62,7 +62,7 @@ class Logger{
     }
     public function __toString(){
         //возвращает имя файла шаблона формы для подключения в шаблоне страниц
-        if(NULL===$this->_user->slug)return 'logger/logger_in_form.html';
+        if(NULL===$this->_user->id)return 'logger/logger_in_form.html';
         else return 'logger/logger_out_form.html';
     }
     protected function clearMail($mail){

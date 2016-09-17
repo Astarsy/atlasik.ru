@@ -1,0 +1,11 @@
+{% extends "default/base.twig.html" %}
+
+{% block title %}Ввод пароля {% endblock %}
+{% block content %}
+{{msg}}
+<form method='post'>
+    <label>Введите новый пароль<input type="password" name="np1"></label>
+    <label>Повторите ввод пароля<input type="password" name="np2"></label>
+    <button type="submit">Отправить</button>
+</form>
+{% endblock %}

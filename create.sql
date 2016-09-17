@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS atlasikdb;
 CREATE DATABASE atlasikdb;
 USE atlasikdb;
 
-
+# Для отображения заголовка и текста сообщения по id
 CREATE TABLE errors(
 			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			title VARCHAR(100) NOT NULL,
@@ -22,6 +22,11 @@ CREATE TABLE user_reg_data(
 			pass_hash VARCHAR(40) NOT NULL,
 			solt INT NOT NULL,
 			iters INT NOT NULL,
+			FOREIGN KEY(uid) REFERENCES users(id)
+			);
+CREATE TABLE admins(
+			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			uid INT NOT NULL UNIQUE,
 			FOREIGN KEY(uid) REFERENCES users(id)
 			);
 CREATE TABLE manufs(
