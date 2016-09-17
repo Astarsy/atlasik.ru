@@ -4,7 +4,7 @@ class CabinetController extends BaseController{
     // Права для зарег. п-лей
     public function __construct(){
     	parent::__construct();
-    	$this->cabinet=new Cabinet();
+    	$this->cabinet=new Cabinet();//нужен для правильного создания формы
     }
     public function Method(){
         $fc=AppController::getInstance();

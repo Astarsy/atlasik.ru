@@ -27,6 +27,15 @@ class ValidableForm{
             }
         }
     }
+    public function __toString(){
+        //выводит содержимое МЕЖДУ тегов form
+        if(!$this->_err_msg)$res='';
+        else $res="<div class='form_err_msg'>$this->_err_msg</div>";
+        foreach($this->_fields as $field){
+            $res.=$field;
+        }
+        return $res;
+    }
     public function getErrMsg(){
         return $this->_err_msg;
     }

@@ -5,9 +5,9 @@
 	<label>зарегистрирован<span>{{this._user.activated_date|date("d.m.Y")}}</span></label>
 	<label>e-mail<span>{{this._user.email}}</span></label>
 	<form method='post'>
-		<label>Имя<input name='name' type='text' value="{{this._user.name}}" /></label>
-		<label>Телефон<input name='phone' type='text' value="{{this._user.phone}}" /></label>
-		<label>Адрес<input name='address' type='text' value="{{this._user.address}}" /></label>
+		{% autoescape false %}
+			{{this.cabinet.form}}
+		{% endautoescape %}
 		<button type='submit'>Сохранить</button>
 	</form>
 </div>

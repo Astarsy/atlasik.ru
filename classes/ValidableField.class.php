@@ -29,7 +29,7 @@ class ValidableField{
             $cl="class='err'";
             $msg="<div class='field_err_msg'>$this->_err_msg</div>";
         }
-        return "<label $cl>$this->_title<input type='$this->_type' name='$this->_name' value='$this->_value'></label>$msg
+        return "<label $cl>$this->_title<input type='$this->_type' name='$this->_name' value='$this->_value'>$msg</label>
 ";
     }public function save(){
         //Перегрузить для сохранения состояния

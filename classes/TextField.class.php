@@ -5,7 +5,7 @@ class TextField extends ValidableField{
         parent::validator();//проверит наличие поля
         if($this->_err_msg)return;
         // String validator
-        $val=Globals\clearStr($_POST[$this->_name]);
+        $val=Utils::clearStr($_POST[$this->_name]);
         if($val==''&&$this->_required==true){
             // отсутстует обязательное значение
             $this->_err_msg='необходимо заполнить данное поле';
@@ -14,6 +14,6 @@ class TextField extends ValidableField{
         $this->_value=$val;
     }
     public function setValue($v){
-        $this->_value=Globals\clearStr($v);
+        $this->_value=Utils::clearStr($v);
     }
 }
