@@ -1,5 +1,5 @@
 <?php
-class CabinetController extends BaseController{
+class CabinetController extends PermitController{
     // Контроллер Кабинета Пользоваталя
     // Права для зарег. п-лей
     public function __construct(){

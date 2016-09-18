@@ -8,6 +8,109 @@ class UserDB extends DB{
         return self::$_instance;
     }
     
+    public function activateUser($hesh){
+        // Активировать п-ля по хешу
+        // Возвращает true/false
+
+        // 1. Обновить users.activated_date=time() по hesh
+        // 2. Удалить запись из user_reg_heshes
+        // 3. Если удаления небыло- вернуть false
+        // 4. return true
+        try{
+            $this->_pdo->beginTransaction();
+            $stmt=$this->_pdo->prepare(
+            "UPDATE users SET activated_date=:a WHERE id=(SELECT uid FROM user_reg_heshes WHERE hesh=:h);");
+            $a=time();
+            $stmt->bindParam(':a',$t,PDO::PARAM_INT);
+            $stmt->bindParam(':h',$hesh,PDO::PARAM_STR);
+            $stmt->execute();
+            if($r=$stmt->rowCount()==0){
+                $this->_pdo->rollBack();
+                return false;
+            }
+        die($r);
+            $stmt=$this->_pdo->prepare(
+            "DELETE FROM user_reg_heshes WHERE id=(SELECT uid FROM user_reg_heshes WHERE hesh=:h);");
+            $stmt->bindParam(':h',$hesh,PDO::PARAM_STR);
+            $stmt->execute();
+            if($stmt->rowCount()==0){
+                $this->_pdo->rollBack();
+                return false;
+            }
+            $this->_pdo->commit();
+        }catch(PDOException $e){
+            $this->_pdo->rollBack();
+            die($e);
+            return false;
+        }//TODO: убрать die
+        return true;
+    }
+    public function emailExists($email){
+        // Проверить, есть ли такой email в users
+        // Возворащает true/false
+        try{
+            $stmt=$this->_pdo->prepare(
+            "SELECT COUNT(id) FROM users WHERE email=:e");
+            $stmt->bindParam(':e',$email,PDO::PARAM_STR);
+            $stmt->execute();
+        }catch(PDOException $e){die($e);}
+        return (bool)$stmt->fetch(PDO::FETCH_NUM)[0];
+    }
+
+    public function saveRegister($form){
+        // Сохраняет:
+        // - нового неактивного поль-ля;
+        // - хеш активации;
+        // - учётные данные (логин,пароль,соль,итерации).
+        // Возвращает reg_hesh/false
+        $reg_hesh=RegistrationDataStorage::getHesh(rand(3,9),rand(3,9),rand(3,9));
+        try{
+            $this->_pdo->beginTransaction();
+
+            $stmt=$this->_pdo->prepare(
+            "INSERT INTO users(slug,email,name,phone,address) VALUES(:s,:e,:n,:p,:a);");
+            $t=time();
+            $slug='u_'.$t;
+            $stmt->bindParam(':s',$slug,PDO::PARAM_STR);
+            $e=$form->getFieldValue('email');
+            $stmt->bindParam(':e',$e,PDO::PARAM_STR);
+            $n=$form->getFieldValue('name');
+            $stmt->bindParam(':n',$n,PDO::PARAM_STR);
+            $p=$form->getFieldValue('phone');
+            $stmt->bindParam(':p',$p,PDO::PARAM_STR);
+            $a=$form->getFieldValue('address');
+            $stmt->bindParam(':a',$a,PDO::PARAM_STR);
+            $stmt->execute();
+
+            $pass=$form->getFieldValue('password1');
+            $solt=rand(1000,9999);
+            $iter=rand(3,9);
+            $pass_hesh=RegistrationDataStorage::getHesh($pass,$solt,$iter);
+
+            $stmt=$this->_pdo->prepare(
+            "INSERT INTO user_reg_heshes(uid,hesh,time) VALUES((SELECT id FROM users WHERE slug=:s),:h,:t);");
+            $stmt->bindParam(':s',$slug,PDO::PARAM_STR);
+            $stmt->bindParam(':h',$reg_hesh,PDO::PARAM_STR);
+            $stmt->bindParam(':t',$t,PDO::PARAM_INT);
+            $stmt->execute();
+
+            $stmt=$this->_pdo->prepare(
+            "INSERT INTO user_reg_data(uid,pass_hash,solt,iters) VALUES((SELECT id FROM users WHERE slug=:s),:h,:so,:i);");
+            $stmt->bindParam(':s',$slug,PDO::PARAM_STR);
+            $stmt->bindParam(':h',$pass_hesh,PDO::PARAM_STR);
+            $stmt->bindParam(':so',$solt,PDO::PARAM_STR);
+            $stmt->bindParam(':i',$iter,PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->_pdo->commit();
+        }catch(PDOException $e){
+            $this->_pdo->rollBack();
+            die($e);
+            return false;
+        }//TODO: убрать die
+        return $reg_hesh;
+    }
+    
     public function saveCabinet($uid,$form){
         // Сохраняет состояние Кабинета поль-ля
         // Возвращает true(Ok)/false

@@ -1,6 +1,6 @@
 <?php
 class DB{
-// Абстрактный базовый класс ддя всех Провайдеров данных приложения
+// Базовый класс ддя всех Провайдеров данных приложения
 	protected $_pdo;
     public function __construct(){
     $this->_pdo=new PDO(
@@ -19,6 +19,8 @@ class DB{
         }catch(PDOException $e){die($e);}
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+    // TODO: убрать из продакшн!
     public function createTestDB(){
         // Creates a test database
         $file=file_get_contents('create.sql');

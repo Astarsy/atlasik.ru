@@ -1,5 +1,5 @@
 <?php
-abstract class BaseController extends AbstractController{
+abstract class PermitController extends AbstractController{
     // Базовый класс реализует проверку прав доступа на уровне контроллера
     // В данной реализации права хранятся в массивe $this->_perms 
     // Алгоритм проверки:
@@ -15,8 +15,7 @@ abstract class BaseController extends AbstractController{
 
     public function __construct(){
         //проверить права для Всего Контроллера
-        $this->_logger=new Logger();
-        $this->_user=$this->_logger->getUser();
+        parent::__construct();
         if(!$this->getPermitions($this->_user->id,get_class($this)))die('access denied');
         echo('Name: '.$this->_user->name.' ,mail: '.$this->_user->email.' ,access allow');
     }

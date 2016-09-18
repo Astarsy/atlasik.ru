@@ -1,41 +1,68 @@
 <?php
 class RegisterController extends AbstractController{
-    // Регистрация п-лей
+    // Контроллер Регистрация п-лей
+    // Права для всех п-лей
+    public function __construct(){
+        parent::__construct();
+    }
     public function Method(){
-        // Главная Кабинета
         $fc=AppController::getInstance();
-        if(NULL===$this->_user->id)exit(header('Location:/register'));
-        exit(header('Location:/cabinet/register'));
+        if(NULL!==$this->_user->id)exit(header('Location: /cabinet'));
+        $this->title='Регистрация '.$_SERVER['HTTP_HOST'];
+        $this->register=new Register();
+        $fc->setContent($fc->render('register/default.twig.html',array('this'=>$this,)));
     }
-    public function registerMethod(){
-        // Регистрировать незалогиненного п-ля
+    public function sendedMethod(){
+        // Сообщить, что регистрация успешна и можно активировать акаунт
         $fc=AppController::getInstance();
+        if(NULL!==$this->_user->id)exit(header('Location: /cabinet'));
+        $this->title='Письмо отправлено '.$_SERVER['HTTP_HOST'];
+        $fc->setContent($fc->render('register/sended.twig.html',array('this'=>$this,)));
+    }
+    public function confirmMethod(){
+        // Подтверждение регистрации
+        $fc=AppController::getInstance();
+        if(NULL!==$this->_user->id)exit(header('Location: /cabinet'));
+        $args=$fc->getArgsNum();
+        if(!isset($args[0]))exit(header('Location: /error/2'));
+        $hesh=Utils::clearStr($args[0]);
+        $this->title='Подтверждение регистрации '.$_SERVER['HTTP_HOST'];
+        $db=UserDB::getInstance();
+        if(!$db->activateUser($hesh))exit(header('Location: /error/2'));
+        $fc->setContent($fc->render('register/complete.twig.html',array('this'=>$this,)));
+    }
 
-        if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
-        else $title='Сообщение';
-        if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
-        else $msg='Отсутствует текст сообщения...';
-        $title=Msg::decode($title);
-        if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
-        else $title='Сообщение';
-        if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
-        else $msg='';
-        $title=Msg::decode($title);
-        $user=$this->_logger->getUser();
-        $user->add_reg_form_time=$this->_db->getUserSalerRequestTime($user);
-        $cabinet=new Cabinet($user);
-        $countries=$this->_db->getCountries();
-        $template_name='cabinet/'.get_class($cabinet->getForm()).'.html';
-        $fc->setContent($fc->render('cabinet/profile.twig.html',array(
-            'msg'=>$msg,
-            'template_name'=>$template_name,
-            'user'=>$user,
-            'classes'=>$cabinet->getForm()->getClasses(),
-            'fields'=>$cabinet->getForm()->getFields(),
-            'msgs'=>$cabinet->getForm()->getMsgs(),
-            'countries'=>$countries,
-            )));
-    }
+
+    
+    // public function registerMethod(){
+    //     // Регистрировать незалогиненного п-ля
+    //     $fc=AppController::getInstance();
+
+    //     if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
+    //     else $title='Сообщение';
+    //     if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
+    //     else $msg='Отсутствует текст сообщения...';
+    //     $title=Msg::decode($title);
+    //     if(isset(array_keys($fc->getArgs())[0]))$title=array_keys($fc->getArgs())[0];
+    //     else $title='Сообщение';
+    //     if(isset($fc->getArgs()[$title]))$msg=Msg::decode($fc->getArgs()[$title]);
+    //     else $msg='';
+    //     $title=Msg::decode($title);
+    //     $user=$this->_logger->getUser();
+    //     $user->add_reg_form_time=$this->_db->getUserSalerRequestTime($user);
+    //     $cabinet=new Cabinet($user);
+    //     $countries=$this->_db->getCountries();
+    //     $template_name='cabinet/'.get_class($cabinet->getForm()).'.html';
+    //     $fc->setContent($fc->render('cabinet/profile.twig.html',array(
+    //         'msg'=>$msg,
+    //         'template_name'=>$template_name,
+    //         'user'=>$user,
+    //         'classes'=>$cabinet->getForm()->getClasses(),
+    //         'fields'=>$cabinet->getForm()->getFields(),
+    //         'msgs'=>$cabinet->getForm()->getMsgs(),
+    //         'countries'=>$countries,
+    //         )));
+    // }
     public function restoreMethod(){
         //ссылка с кодом подтверждения восстановления пароля
         $fc=AppController::getInstance();
@@ -108,19 +135,5 @@ class RegisterController extends AbstractController{
                     Msg::encode('На указанный Вами e-mail отправлено письмо, содержащее ссылку для восстановление пароля.'));
         }
         $fc->setContent($fc->render('cabinet/forget_password.twig.html'));
-    }
-    public function confirmMethod(){
-        //подтверждение регистрации
-        $fc=AppController::getInstance();        
-        if(!isset(array_keys($fc->getArgs())[0]))header('Location:/error');
-        $recived_hesh=array_keys($fc->getArgs())[0];
-        if(!isset($fc->getArgs()[$recived_hesh]))header('Location:/error');
-        $recived_slug_hesh=$fc->getArgs()[$recived_hesh];
-        $res=$this->_db->activateUser($recived_hesh,$recived_slug_hesh);
-        if($res!==false)die($res);
-        $fc->setContent($fc->render('msg.twig.html',array(
-            'title'=>'Активация учетной записи',
-            'msg'=>'Подтверждение Вашего электронного адреса успешно выполнено. Ваша учетная запись активирована. Вы можете войти на сайт используя указзанный при регистрации электронный адрес и пароль.'
-            )));
     }
 }

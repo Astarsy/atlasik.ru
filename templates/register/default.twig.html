@@ -1,0 +1,12 @@
+{% extends "default/base.twig.html" %}
+{% block content %}
+<h1>Регистрация<span>(ни к чему не обязывает)</span></h1>
+<div>
+	<form method='post'>
+		{% autoescape false %}
+			{{this.register.form}}
+		{% endautoescape %}
+		<button type='submit'>Сохранить</button>
+	</form>
+</div>
+{% endblock %}

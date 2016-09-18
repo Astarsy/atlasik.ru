@@ -1,5 +1,10 @@
 <?php
 class AbstractController{
+// Абстрактный базовый класс, содержит Логгер, устанавливает $this->_user
+    public function __construct(){
+        $this->_logger=new Logger();
+        $this->_user=$this->_logger->getUser();
+    }
 	
     public function errorMethod(){
         // Отображает текстовое сообщение по номеру- errors.id

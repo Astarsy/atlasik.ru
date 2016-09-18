@@ -21,11 +21,19 @@ CREATE TABLE users(
 CREATE TABLE user_reg_data(
 			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			uid INT NOT NULL UNIQUE,
-			pass_hash VARCHAR(40) NOT NULL,
+			pass_hash CHAR(40) NOT NULL,
 			solt INT NOT NULL,
 			iters INT NOT NULL,
 			FOREIGN KEY(uid) REFERENCES users(id)
 			);
+# TODO: небходимо очищать эту таблицу РЕГУЛЯРНО
+CREATE TABLE user_reg_heshes(
+				id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				uid INT NOT NULL UNIQUE,
+				hesh CHAR(40) NOT NULL UNIQUE,
+				time INT NOT NULL,
+				FOREIGN KEY(uid) REFERENCES users(id)
+				);
 CREATE TABLE manufs(
 			id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			name VARCHAR(80) NOT NULL UNIQUE

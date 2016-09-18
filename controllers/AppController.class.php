@@ -26,9 +26,9 @@ class AppController{
 			$this->_method=$rc->getMethod($m_n);
 			array_shift($strs);
 		}else{
-			//$rc=new ReflectionClass('DefaultController');
-			//$this->_method=$rc->getMethod('errorMethod');
-            $this->_method=$rc->getMethod('Method');
+			$m_n='Method';
+			if(!$rc->hasMethod($m_n))die('Нет обязательного метода');
+            $this->_method=$rc->getMethod($m_n);
 		}
 		$this->_controller=$rc->newInstance();
         $this->_argsNumArr=$strs;
