@@ -20,17 +20,16 @@ class UserDB extends DB{
             $this->_pdo->beginTransaction();
             $stmt=$this->_pdo->prepare(
             "UPDATE users SET activated_date=:a WHERE id=(SELECT uid FROM user_reg_heshes WHERE hesh=:h);");
-            $a=time();
+            $t=time();
             $stmt->bindParam(':a',$t,PDO::PARAM_INT);
             $stmt->bindParam(':h',$hesh,PDO::PARAM_STR);
             $stmt->execute();
             if($r=$stmt->rowCount()==0){
                 $this->_pdo->rollBack();
                 return false;
-            }
-        die($r);
+            };
             $stmt=$this->_pdo->prepare(
-            "DELETE FROM user_reg_heshes WHERE id=(SELECT uid FROM user_reg_heshes WHERE hesh=:h);");
+            "DELETE FROM user_reg_heshes WHERE hesh=:h;");
             $stmt->bindParam(':h',$hesh,PDO::PARAM_STR);
             $stmt->execute();
             if($stmt->rowCount()==0){
