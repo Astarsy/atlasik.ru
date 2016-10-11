@@ -6,16 +6,34 @@
 	<title>{{this.title}}</title>
 	<link rel="icon" href="favicon.png" type="image/png">
 	<link rel="stylesheet" href="/css/main.css" type="text/css">
+
+	<script src="https://unpkg.com/react@15.3.0/dist/react.js"></script>
+	<script src="https://unpkg.com/react-dom@15.3.0/dist/react-dom.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+	<script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
 </head>
 <body>
 <header>
     {% block header %}{% endblock %}
 </header>
-<content>
+<div class="content">
     {% block content %}{% endblock %}
-</content>
+	<div id="lenta"></div>
+</div>
 <footer>
     {% block footer %}{% endblock %}
 </footer>
+<script>
+	function addEvent(cn,ev,f){
+		var arr=document.getElementsByClassName(cn);
+		for(var i=0;i<arr.length;i++){
+			arr[i].addEventListener(ev,f,false);
+		}
+	}
+	window.onload=function(){
+		this.addEvent('topic','click',topic_on_click);
+	}
+</script>
+<script type="text/babel" src="scripts/lenta.jsx"></script>
 </body>
 </html>

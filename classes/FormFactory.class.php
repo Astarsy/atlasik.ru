@@ -28,7 +28,7 @@ class FormFactory{
     	// Получить из хранилища список Полей
     	// Вернуть массив объектов
     	$strs=parse_ini_file(Globals\FORMS_INI_FILE,true);
-    	$fields=$strs[$class_name]??array();
+    	$fields=$strs[$class_name]?$strs[$class_name]:array();
     	$objs=array();
     	foreach($fields as $k=>$v){
 	    	$template=new stdClass();

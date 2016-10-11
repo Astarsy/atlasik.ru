@@ -11,6 +11,7 @@ class DefaultController extends AbstractController{
         // Главная Витрина
         $fc=AppController::getInstance();
         $this->title='Ткани '.$_SERVER['HTTP_HOST'];
+        $this->lenta=new Lenta();
         $fc->setContent($fc->render('default/index.twig.html',array('this'=>$this,)));
     }
     public function headersMethod(){
