@@ -2,6 +2,7 @@ var MessagePanel=React.createClass({
   render:function(){
     return(
         <div>
+          {this.props.msg_title}
           {this.props.msg_text}
         </div>
     );
@@ -12,13 +13,13 @@ var HeaderPanel=React.createClass({
     return {data:[]};
   },
   handleOnClick:function(e){
+    e.preventDefault();
     if(this.state.data.length>0){
       this.setState({data:[]});
       return;
     }
-    var h_id=e.target.getElementsByClassName('header_id')[0].innerHTML.toString();
     this.req=$.ajax({
-      url:this.props.url+'/'+h_id,
+      url:this.props.url+'/'+e.target.value,
       dataType:'json',
       cache:false,
       success:function(data){
@@ -33,12 +34,15 @@ var HeaderPanel=React.createClass({
   render: function(){
     var msgs=[];
     this.state.data.forEach(function(msg){
-      msgs.push(<MessagePanel msg_text={msg.text} key={msg.id} />);
-    });
+      var msg_title=null;
+      // set undefined title of first message
+      if(this.props.title!=msg.title)msg_title=msg.title;
+      msgs.push(<MessagePanel msg_title={msg_title} msg_text={msg.text} key={msg.id} />);
+    }.bind(this));
     return (
-        <div onClick={this.handleOnClick}>
+        <div>
           <span className="header_id">{this.props.user_id}</span>
-          <span>{this.props.title}</span>
+          <button onClick={this.handleOnClick} value={this.props.user_id}>{this.props.title}</button>
           <div>
             {msgs}
           </div>
