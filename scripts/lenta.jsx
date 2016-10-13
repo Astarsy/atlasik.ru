@@ -10,12 +10,12 @@ var MessagePanel=React.createClass({
 });
 var HeaderPanel=React.createClass({
   getInitialState:function(){
-    return {messages:[],cur_page:null};
+    return {messages:[],cur_page:null,messages_count:null,messages_on_page:null};
   },
   handleOnClick:function(e){
     e.preventDefault();
     if(this.state.messages.length>0){
-      this.setState({messages:[],cur_page:null});
+      this.setState({messages:[],cur_page:null,messages_count:null,messages_on_page:null});
       return;
     }
     this.req=$.ajax({
@@ -23,7 +23,7 @@ var HeaderPanel=React.createClass({
       dataType:'json',
       cache:false,
       success:function(data){
-        this.setState({messages:data.messages,cur_page:data.cur_page});
+        this.setState({messages:data.messages,cur_page:data.cur_page,messages_count:data.messages_count,messages_on_page:data.messages_on_page});
       }.bind(this),
       error:function(req,stat,err){console.error(this.props.url,stat,err.toString());}.bind(this)
     });
@@ -33,6 +33,10 @@ var HeaderPanel=React.createClass({
   },
   render: function(){
     var msgs=[];
+    var pagenator=null;
+    if(this.state.messages_count>this.state.messages_on_page){
+      pagenator=(<div>{this.state.cur_page}:{this.state.messages_count}</div>);
+    }
     this.state.messages.forEach(function(msg){
       var msg_title=null;
       // set undefined title of first message
@@ -46,7 +50,7 @@ var HeaderPanel=React.createClass({
           <div>
             {msgs}
           </div>
-          <div>{this.state.cur_page}</div>
+          {pagenator}
         </div>
     );
   }

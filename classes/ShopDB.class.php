@@ -30,18 +30,28 @@ class ShopDB extends DB{
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function getMessages($uid,$page=0){
+    protected function getMessagesCount($uid){
+        try{
+            $stmt=$this->_pdo->prepare("SELECT COUNT(id) FROM messages WHERE user_id=:uid");
+            $stmt->bindParam(':uid',$uid,PDO::PARAM_INT);
+            $stmt->execute();
+        }catch(PDOException $e){return $e;}
+        return $stmt->fetch(PDO::FETCH_NUM)[0];
+    }
+
+    public function getMessages($uid,$page=0,&$count,&$mop){
+        $mop=MSGS_ON_PAGE;
         $from=$page*MSGS_ON_PAGE;
         // returns messages by user id as array of arrays
 	    try{
-            $stmt=$this->_pdo->prepare("
-SELECT id,time,title,text FROM messages WHERE user_id=:uid ORDER BY time DESC LIMIT :from, :count");
+            $stmt=$this->_pdo->prepare("SELECT id,time,title,text FROM messages WHERE user_id=:uid ORDER BY time DESC LIMIT :from, :count");
             $stmt->bindParam(':uid',$uid,PDO::PARAM_INT);
             $stmt->bindParam(':from',$from,PDO::PARAM_INT);
             $c=MSGS_ON_PAGE;
             $stmt->bindParam(':count',$c,PDO::PARAM_INT);
             $stmt->execute();
         }catch(PDOException $e){return $e;}
+        $count=$this->getMessagesCount($uid);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
