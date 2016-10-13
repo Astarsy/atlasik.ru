@@ -1,4 +1,7 @@
 <?php
+
+const MSGS_ON_PAGE=2;
+
 class ShopDB extends DB{
 	// Провайдер данных для приложения Магазина
     static protected $_instance;
@@ -27,12 +30,16 @@ class ShopDB extends DB{
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function getMessages($uid){
+    public function getMessages($uid,$page=0){
+        $from=$page*MSGS_ON_PAGE;
         // returns messages by user id as array of arrays
 	    try{
             $stmt=$this->_pdo->prepare("
-SELECT id,time,title,text FROM messages WHERE user_id=:uid ORDER BY time DESC LIMIT 10");
+SELECT id,time,title,text FROM messages WHERE user_id=:uid ORDER BY time DESC LIMIT :from, :count");
             $stmt->bindParam(':uid',$uid,PDO::PARAM_INT);
+            $stmt->bindParam(':from',$from,PDO::PARAM_INT);
+            $c=MSGS_ON_PAGE;
+            $stmt->bindParam(':count',$c,PDO::PARAM_INT);
             $stmt->execute();
         }catch(PDOException $e){return $e;}
         return $stmt->fetchAll(PDO::FETCH_OBJ);

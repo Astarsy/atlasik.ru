@@ -10,20 +10,20 @@ var MessagePanel=React.createClass({
 });
 var HeaderPanel=React.createClass({
   getInitialState:function(){
-    return {data:[]};
+    return {messages:[],cur_page:null};
   },
   handleOnClick:function(e){
     e.preventDefault();
-    if(this.state.data.length>0){
-      this.setState({data:[]});
+    if(this.state.messages.length>0){
+      this.setState({messages:[],cur_page:null});
       return;
     }
     this.req=$.ajax({
-      url:this.props.url+'/'+e.target.value,
+      url:this.props.url+'/'+e.target.value+'/'+this.state.cur_page,
       dataType:'json',
       cache:false,
       success:function(data){
-        this.setState({data:data});
+        this.setState({messages:data.messages,cur_page:data.cur_page});
       }.bind(this),
       error:function(req,stat,err){console.error(this.props.url,stat,err.toString());}.bind(this)
     });
@@ -33,7 +33,7 @@ var HeaderPanel=React.createClass({
   },
   render: function(){
     var msgs=[];
-    this.state.data.forEach(function(msg){
+    this.state.messages.forEach(function(msg){
       var msg_title=null;
       // set undefined title of first message
       if(this.props.title!=msg.title)msg_title=msg.title;
@@ -46,6 +46,7 @@ var HeaderPanel=React.createClass({
           <div>
             {msgs}
           </div>
+          <div>{this.state.cur_page}</div>
         </div>
     );
   }
@@ -72,7 +73,7 @@ var LentaBox=React.createClass({
   render: function(){
     var rows=[];
     this.state.data.map(function(row){
-      rows.push(<HeaderPanel url="/ajax/messages" title={row.title} user_id={row.user_id} key={row.id} />);
+      rows.push(<HeaderPanel url="/ajax/reactmessages" title={row.title} user_id={row.user_id} key={row.id} />);
     });
     return (
         <div>
