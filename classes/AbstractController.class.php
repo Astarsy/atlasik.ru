@@ -1,6 +1,9 @@
 <?php
 class AbstractController{
 // Абстрактный базовый класс, содержит Логгер, устанавливает $this->_user
+
+    protected $_user;
+
     public function __construct(){
         $this->_logger=new Logger();
         $this->_user=$this->_logger->getUser();
@@ -15,5 +18,9 @@ class AbstractController{
         $eid=Utils::clearUInt($eid);
         $this->error=$this->_db->getErrorById($eid);
         $fc->setContent($fc->render('default/error.twig.html',array('this'=>$this,)));
+    }
+
+    public function getUser(){
+        return $this->_user;
     }
 }

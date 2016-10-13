@@ -92,18 +92,20 @@ INSERT INTO users(id,slug,name,phone,email,activated_date,admin)
 	VALUES	(1,'u_001','John Smith','+7(917)117-17-17','john@smith.loc',1468499077,1),
 			(2,'u_002','Mike White','+7(902)111-11-11','mike@white.loc',1468499277,NULL),
 			(3,'u_003','Not Active User',NULL,'not@active.user',NULL,NULL),
-			(4,'u_004','Anonim User',NULL,'anonim@user.loc',1468500090,NULL);
+			(4,'u_004','Anonim User',NULL,'anonim@user.loc',1468500090,NULL),
+			(5,'u_005','John1 Smith','+7(917)117-17-17','john1@smith.loc',1468500077,NULL);
 INSERT INTO user_reg_data(uid,pass_hash,solt,iters)
 	VALUES	(1,'51684c5c468cf340fff1ea640fe7c2d68ecfd1ca',1784945005,19),
 			(2,'8b6c20edaa42700a450590f58286308d9cb3a8a7',1045074831,6),
 			(3,'51684c5c468cf340fff1ea640fe7c2d68ecfd1ca',1784945005,19),
-			(4,'8e1059495426af704ab9c5561f6fa7876b4f951a',2085205362,20);
+			(4,'8e1059495426af704ab9c5561f6fa7876b4f951a',2085205362,20),
+			(5,'51684c5c468cf340fff1ea640fe7c2d68ecfd1ca',1784945005,19);
 INSERT INTO messages(user_id, title, text, time)VALUES
   (1,'Frist title','First message text content',1468499077),
   (2,'Second title','Second message text content',1468499177),
   (1,'Third title','Third message text content',1468499277),
   (2,'Forth title','Forth message text content',1468499377),
-  (1,'Fifth title','Fifth message text content',1468499477),
+  (5,'Fifth title','Fifth message text content',1468499477),
   (1,'6-th title','6-th message text content',1468499577),
   (1,'7-th title','7-th message text content',1468499677),
   (1,'8-th title','8-th message text content',1468499777);
