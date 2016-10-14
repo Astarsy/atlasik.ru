@@ -23,17 +23,6 @@
 <footer>
     {% block footer %}{% endblock %}
 </footer>
-<script>
-	function addEvent(cn,ev,f){
-		var arr=document.getElementsByClassName(cn);
-		for(var i=0;i<arr.length;i++){
-			arr[i].addEventListener(ev,f,false);
-		}
-	}
-	window.onload=function(){
-		this.addEvent('topic','click',topic_on_click);
-	}
-</script>
 <script type="text/babel" src="scripts/lenta.jsx"></script>
 </body>
 </html>

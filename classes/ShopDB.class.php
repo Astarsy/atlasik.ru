@@ -58,17 +58,4 @@ class ShopDB extends DB{
 	public function getGoodById($mail){
 
 	}
-
-	public function getLentaHeaders(){
-	    // returns last message for each user(theme) as array fo objects
-	    try{
-            $stmt=$this->_pdo->prepare("
-    SELECT t1.* FROM (
-      SELECT DISTINCT messages.id,title,text,user_id,users.name as user_name,time 
-        FROM messages LEFT JOIN users ON users.id=messages.user_id ORDER BY time DESC 
-    )as t1 GROUP BY user_id");
-            $stmt->execute();
-        }catch(PDOException $e){die($e);}
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
 }
