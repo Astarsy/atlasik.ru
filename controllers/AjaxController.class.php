@@ -2,7 +2,7 @@
 class AjaxController extends AbstractController{
     // A AJAX request controller
     public function messagesMethod(){
-        // Returns array of messages for user_id as json string
+        // Returns array of messages for user_id as json string for Native version
         $args=AppController::getInstance()->getArgsNum();
         if(!isset($args[0]))exit;
         $uid=Utils::clearUInt($args[0]);
