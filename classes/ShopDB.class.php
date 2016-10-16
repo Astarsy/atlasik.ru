@@ -1,6 +1,6 @@
 <?php
 
-const MSGS_ON_PAGE=2;
+const MSGS_ON_PAGE=8;
 
 class ShopDB extends DB{
 	// Провайдер данных для приложения Магазина

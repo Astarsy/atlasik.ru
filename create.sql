@@ -108,7 +108,22 @@ INSERT INTO messages(user_id, title, text, time)VALUES
   (5,'Fifth title','Fifth message text content',1468499477),
   (1,'6-th title','6-th message text content',1468499577),
   (1,'7-th title','7-th message text content',1468499677),
-  (1,'8-th title','8-th message text content',1468499777);
+  (1,'8-th title','8-th message text content',1468499777),
+  (1,'n-th title','n-th message text contentttttt.........',1468499787),
+  (1,'n-th title','n-th message text contentttttt.........',1468499797),
+  (1,'n-th title','n-th message text contentttttt.........',1468499807),
+  (1,'n-th title','n-th message text contentttttt.........',1468499817),
+  (1,'n-th title','n-th message text contentttttt.........',1468499827),
+  (1,'n-th title','n-th message text contentttttt.........',1468499837),
+  (1,'n-th title','n-th message text contentttttt.........',1468499847),
+  (1,'n-th title','n-th message text contentttttt.........',1468499857),
+  (1,'n-th title','n-th message text contentttttt.........',1468499867),
+  (1,'n-th title','n-th message text contentttttt.........',1468499877),
+  (1,'n-th title','n-th message text contentttttt.........',1468499887),
+  (1,'n-th title','n-th message text contentttttt.........',1468499897),
+  (1,'n-th title','n-th message text contentttttt.........',1468499907),
+  (1,'n-th title','n-th message text contentttttt.........',1468499917),
+  (1,'n-th title','n-th message text contentttttt.........',1468499917);
 INSERT INTO manufs(id,name)
 	VALUES	(1,'Россия'),
 			(2,'Италия'),
