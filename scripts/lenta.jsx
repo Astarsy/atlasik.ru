@@ -9,32 +9,45 @@ var MessagePanel=React.createClass({
   }
 });
 var HeaderPanel=React.createClass({
+  ajax_response_waiting:false,
   getInitialState:function(){
-    return {messages:[],cur_page:null,messages_count:null,messages_on_page:null,class_name:'HeaderPanel',};
+    return {messages:[],class_name:'HeaderPanel',};
   },
-  handleOnClick:function(e){
-    e.preventDefault();
-    this.class_name+=' is_active';
-    if(this.state.messages.length>0){
-      this.setState({messages:[],cur_page:null,messages_count:null,messages_on_page:null,class_name:'HeaderPanel',});
-      return;
-    }
-    this.req=$.ajax({
-      url:this.props.url+'/'+this.props.user_id+'/'+this.state.cur_page,
+  ajaxRequest:function(){
+    if(this.ajax_response_waiting)return;
+    this.ajax_response_waiting=true;
+    var url=this.props.url+'/'+this.props.user_id+'/'+this.state.messages.length;
+    return $.ajax({
+      url:url,
       dataType:'json',
       cache:false,
-      success:function(data){
-        this.setState({messages:data.messages,cur_page:data.cur_page,messages_count:data.messages_count,messages_on_page:data.messages_on_page,class_name:'HeaderPanel is_active',});
+      timeout:10000,
+      success:function(messages){
+        var msgs=this.state.messages.concat(messages);
+        this.setState({messages:msgs,class_name:'HeaderPanel is_active',});
       }.bind(this),
-      error:function(req,stat,err){console.error(this.props.url,stat,err.toString());}.bind(this)
+      error:function(req,stat,err){
+        console.error(this.props.url,stat,err.toString());
+      }.bind(this),
+      complete:function(){
+        this.ajax_response_waiting=false;
+      }.bind(this)
     });
+  },
+  handleOnClick:function(e){
+    if(this.state.messages.length>0){
+      this.setState({messages:[],class_name:'HeaderPanel',});
+      return;
+    }
+    this.req=this.ajaxRequest();
   },
   componentWillUnmount:function(){
     this.req.abort();
   },
   handleOnScroll:function(e){
-    var d;
-    if(0==e.target.scrollHeight-e.target.clientHeight-e.target.scrollTop)console.log('ajax request now!');
+    if(0==e.target.scrollHeight-e.target.clientHeight-e.target.scrollTop&&!this.ajax_response_waiting&&this.state.messages.length>0){
+      this.req=this.ajaxRequest();
+    }
   },
   render: function(){
     var msgs=[];
@@ -77,7 +90,7 @@ var LentaBox=React.createClass({
   render: function(){
     var rows=[];
     this.state.data.map(function(row){
-      rows.push(<HeaderPanel url="/ajax/reactmessages" title={row.title} user_id={row.user_id} key={row.id} />);
+      rows.push(<HeaderPanel url="/ajax/getMessages" title={row.title} user_id={row.user_id} key={row.id} />);
     });
     return (
         <div>
@@ -90,6 +103,6 @@ var LentaBox=React.createClass({
 });
 
 ReactDOM.render(
-  <LentaBox url="/ajax/getmsgheaders" />,
+  <LentaBox url="/ajax/getHeaders" />,
   document.getElementById('lenta')
 );

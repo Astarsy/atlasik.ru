@@ -2,22 +2,20 @@
 class AjaxController extends AbstractController{
     // A AJAX request controller
 
-    public function reactMessagesMethod(){
-        // Returns array of messages for user_id as json string with pagination
+    public function getMessagesMethod(){
+        // Returns array of messages for user_id as json string form N-th record
         $args=AppController::getInstance()->getArgsNum();
         if(!isset($args[0]))exit;
         $uid=Utils::clearUInt($args[0]);
-        $page=$count=$messages_on_page=0;
-        if(isset($args[1]))$page=Utils::clearUInt($args[1]);
-        $msgs=ShopDB::getInstance()->getMessages($uid,$page,$count,$messages_on_page);
-        $res=array('cur_page'=>$page,'messages_count'=>$count,'messages_on_page'=>$messages_on_page,'messages'=>$msgs);
-        //print '<pre>';var_dump($res);exit;
-        $jstr=json_encode($res);
+        $messages_count=0;
+        if(isset($args[1]))$messages_count=Utils::clearUInt($args[1]);
+        $msgs=ShopDB::getInstance()->getMessages($uid,$messages_count);
+        $jstr=json_encode($msgs);
         print $jstr;
         exit;
     }
 
-    public function getMsgHeadersMethod(){
+    public function getHeadersMethod(){
         $uid=$this->getUser()->id;
         if(null===$uid){
             $res=ShopDB::getInstance()->getLastMsgHeaders();
