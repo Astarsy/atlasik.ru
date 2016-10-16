@@ -32,6 +32,10 @@ var HeaderPanel=React.createClass({
   componentWillUnmount:function(){
     this.req.abort();
   },
+  handleOnScroll:function(e){
+    var d;
+    if(0==e.target.scrollHeight-e.target.clientHeight-e.target.scrollTop)console.log('ajax request now!');
+  },
   render: function(){
     var msgs=[];
     this.state.messages.map(function(msg,i){
@@ -41,7 +45,7 @@ var HeaderPanel=React.createClass({
       msgs.push(<MessagePanel msg_title={msg_title} msg_text={msg.text} key={msg.id} />);
     }.bind(this));
     return (
-        <div className={this.state.class_name} onClick={this.handleOnClick}>
+        <div className={this.state.class_name} onClick={this.handleOnClick} onScroll={this.handleOnScroll}>
           <div className="header_id">{this.props.user_id}</div>
           <div>{this.props.title}</div>
           <div>

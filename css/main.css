@@ -4,6 +4,6 @@ span{font-size: small;color:green;margin: 0 1em}
 .err{border: 1px solid red;}
 .HeaderPanel{
     border: 1px solid steelblue;
-    max-height: 8em;
+    max-height: 200px;
     overflow: auto;
 }
